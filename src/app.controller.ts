@@ -1,11 +1,11 @@
 import {
   Body,
   Controller,
-  Delete,
   Get,
+  HttpException,
+  HttpStatus,
   Param,
   Post,
-  Put,
   Render,
 } from '@nestjs/common';
 import { AppService } from './app.service';
@@ -19,21 +19,43 @@ export class AppController {
 
   @Get()
   @Render('index')
-  async getAllProfiles(): Promise<Profile[]> {
-    return await this.appService.getProfiles();
+  root() {
+    return { message: 'Hello world!' };
   }
 
-  @Get(':id')
-  async getProfileById(@Param('id') id: UUID): Promise<Profile> {
-    return await this.appService.getProfileById(id);
+  @Get('/profiles') // Define the route where you want to render the profiles
+  @Render('profiles') // Render the profile-list.hbs template
+  async showProfiles() {
+    const profiles = await this.appService.getProfiles();
+    return { profiles };
   }
 
-  @Post()
+  @Get('/profile/:id')
+  @Render('profile')
+  async showProfileById(@Param('id') id: UUID): Promise<Profile> {
+    try {
+      const profile = await this.appService.getProfileById(id);
+      return { ...profile };
+    } catch (error) {
+      console.error(error);
+      // Handle the error gracefully, perhaps by rendering an error page
+      throw new HttpException('Profile not found', HttpStatus.NOT_FOUND);
+    }
+  }
+
+  @Post('/profile')
   async createProfile(@Body() createProfileDto: CreateProfileDto) {
     return await this.appService.createProfile(createProfileDto);
   }
 
-  @Put(':id')
+  @Get('/profile/:id/edit') // Define the route where you want to render the profiles
+  @Render('edit-profile') // Render the profile-list.hbs template
+  async editProfile(@Param('id') id: UUID) {
+    const profile = await this.appService.getProfileById(id);
+    return { profile };
+  }
+
+  @Post('profile/:id/edit')
   async updateProfile(
     @Param('id') id: UUID,
     @Body() createProfileDto: CreateProfileDto,
@@ -41,7 +63,7 @@ export class AppController {
     return await this.appService.updateProfile(id, createProfileDto);
   }
 
-  @Delete(':id')
+  @Post('profile/:id/delete')
   async deleteProfile(@Param('id') id: UUID) {
     return await this.appService.deleteProfile(id);
   }

@@ -1,0 +1,39 @@
+<html>
+  <head>
+    <title>User Profile</title>
+    <!-- Include Bootstrap CSS via CDN -->
+    <link
+      rel='stylesheet'
+      href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css'
+    />
+  </head>
+  <body>
+    <div class='container mt-5'>
+      <h1>User Profile</h1>
+      <div class='card'>
+        <div class='card-body'>
+          <p class='card-text'>firstname: {{profile.email}}</p>
+          <p class='card-text'>lastname: {{profile.phone}}</p>
+          <p class='card-text'>Email: {{profile.email}}</p>
+          <p class='card-text'>Phone: {{profile.phone}}</p>
+          <a href='/profile/{{profile._id}}/edit' class='btn btn-primary'>Edit
+            Profile</a>
+          <form
+            action='/profile/{{profile._id}}/delete'
+            method='POST'
+            style='display: inline;'
+          >
+            <input type='hidden' name='_method' value='DELETE' />
+            <button type='submit' class='btn btn-danger'>Delete Profile</button>
+          </form>
+          <a href='/profiles' class='btn btn-secondary'>Back to Profiles</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Include Bootstrap JavaScript via CDN (optional) -->
+    <script
+      src='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js'
+    ></script>
+  </body>
+</html>
