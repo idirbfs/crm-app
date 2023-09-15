@@ -3,7 +3,7 @@ import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 export class CreateProfileDto {
   @IsNotEmpty()
   @IsString()
-  fisrtName: string;
+  firstName: string;
 
   @IsNotEmpty()
   @IsString()

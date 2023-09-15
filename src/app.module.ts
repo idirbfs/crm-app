@@ -6,7 +6,9 @@ import { Profile, ProfileSchema } from './schemas/Profile.schema';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://localhost:8081'),
+    MongooseModule.forRoot(
+      'mongodb+srv://belfaresidir:belfaresidir@cluster0.umecbmu.mongodb.net/?retryWrites=true&w=majority',
+    ),
     MongooseModule.forFeature([{ name: Profile.name, schema: ProfileSchema }]),
   ],
   controllers: [AppController],
