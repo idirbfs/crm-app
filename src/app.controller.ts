@@ -23,6 +23,11 @@ export class AppController {
     return { message: 'Hello world!' };
   }
 
+  @Post('/profile')
+  async createProfile(@Body() createProfileDto: CreateProfileDto) {
+    return await this.appService.createProfile(createProfileDto);
+  }
+
   @Get('/profiles') // Define the route where you want to render the profiles
   @Render('profiles') // Render the profile-list.hbs template
   async showProfiles() {
@@ -41,11 +46,6 @@ export class AppController {
       // Handle the error gracefully, perhaps by rendering an error page
       throw new HttpException('Profile not found', HttpStatus.NOT_FOUND);
     }
-  }
-
-  @Post('/profile')
-  async createProfile(@Body() createProfileDto: CreateProfileDto) {
-    return await this.appService.createProfile(createProfileDto);
   }
 
   @Get('/profile/:id/edit') // Define the route where you want to render the profiles
